@@ -1,0 +1,107 @@
+include defaults
+
+xwayland enable
+
+exec /home/victor/.config/sway/wallpaper.sh
+exec waybar
+
+default_border pixel 10
+focus_follows_mouse no
+font "Deja Vu 16"
+gaps inner 0
+seat * xcursor_theme Adwaita 48
+#bindsym $mod+$alt+h exec swaymsg bar mode hide
+#bindsym $mod+$alt+s exec swaymsg bar mode dock
+bindsym $mod+$alt+b exec killall waybar && waybar
+
+#### SCRATCHPAD BINDINGS ####
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+plus floating toggle 
+
+#### STATUS BAR ####
+#bar {
+#    id 0
+#    position top
+#    font "Deja Vu 27"
+#    status_command while true; do /home/victor/.config/sway/statusbar.sh; sleep .1; done
+#    workspace_min_width 100
+#    tray_padding 20
+#    gaps 0 100 0 100
+#    #mode hide
+#    colors {
+#        statusline #000000
+#        background #ffffffe0
+#        inactive_workspace #32323290 #32323290 #5c5c5c
+#    }
+#}
+
+#### HARDWARE AUDIO KEYBINDINGS ####
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86Search exec $menu
+
+#### DISPLAY STUFF #####
+output DP-1  mode 3840x2160@143.999Hz pos 0 0 
+output DP-2  mode 3440x1440@143.923Hz pos 3840 0 disable 
+output HDMI-A-1  mode 3840x2160@120.000Hz disable 
+output * adaptive_sync on
+
+bindsym $mod+z mode "displays"
+mode "displays" {
+    bindsym 1 exec swaymsg output DP-1 toggle 
+    bindsym 2 exec swaymsg output DP-2 toggle 
+    bindsym 3 exec swaymsg output HDMI-A-1 toggle 
+    bindsym shift+2 exec swaymsg output '*' scale 1.5
+    bindsym shift+1 exec swaymsg output '*' scale 1
+    bindsym Return mode "default" 
+    bindsym Escape mode "default" 
+}
+
+#### KEYBINDINIGS FOR APPS ####
+bindsym $mod+n mode "apps"
+mode "apps" {
+    bindsym $mod+i exec firefox
+    bindsym $mod+f exec pcmanfm
+    bindsym $mod+g exec steam
+    bindsym $mod+v exec pavucontrol
+
+    bindsym Return mode "default" 
+    bindsym Escape mode "default" 
+}
+
+#### My Mappings ####
+bindsym $mod+m mode "myMaps"
+mode "myMaps" {
+    bindsym Return mode "default" 
+    bindsym Escape mode "default" 
+}
+
+
+#### Resizing containers ####
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
